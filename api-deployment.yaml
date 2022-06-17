@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: alexiscrack3/spinny-api
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: db-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: db-password
+        - name: RAILS_MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-secret
+              key: rails-master-key
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: db-configmap
+              key: db-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+spec:
+  selector:
+    app: api
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
