@@ -27,7 +27,7 @@ services:
     ports:
       - 3000:3000
     networks:
-      - api-network
+      - spinny-network
       - data-network
 
   db:
@@ -60,7 +60,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - api-network
+      - data-network
     volumes:
       - redis-volume:/data
 
@@ -75,10 +75,10 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - api-network
+      - data-network
 
 networks:
-  api-network:
+  spinny-network:
     driver: bridge
   data-network:
     driver: bridge
