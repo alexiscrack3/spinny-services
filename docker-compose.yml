@@ -1,6 +1,19 @@
 version: "3.8"
 
 services:
+  web:
+    image: alexiscrack3/spinny-web:latest
+    container_name: web
+    restart: always
+    depends_on:
+      - api
+    env_file:
+      - web.env
+    ports:
+      - "80:8080"
+    networks:
+      - spinny-network
+
   api:
     image: alexiscrack3/spinny-api:latest
     container_name: api
@@ -8,7 +21,7 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - .env
+      - api.env
     environment:
       - MYSQL_HOST=db
     ports:
