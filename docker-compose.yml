@@ -77,6 +77,11 @@ services:
     networks:
       - data-network
 
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    # command: certbot --nginx -d alexisortega.dev -d www.alexisortega.dev
+
 networks:
   spinny-network:
     driver: bridge
