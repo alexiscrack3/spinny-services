@@ -13,6 +13,8 @@ services:
       - "80:80"
     networks:
       - spinny-network
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
 
   api:
     image: alexiscrack3/spinny-api:latest
